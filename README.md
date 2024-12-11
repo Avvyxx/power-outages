@@ -207,7 +207,7 @@ Next, let's take a deep dive into outages a *monthly* basis with a focus on seve
 
 Interestingly enough, summer has more presence than winter. And as expected, spring and fall months tend to have less occurences of major power outages.
 
-### Interesting Aggregates <a name="aggr">
+### Interesting Aggregates <a name="aggr"></a>
 
 Now, as mentioned earlier, `"intentional attack"` was unexpectedly high as a cause for major power outages. Let's take a closer look on our outage categories and how they fair against one another in the states with the most outages:
 
