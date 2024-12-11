@@ -1,4 +1,4 @@
-Introduction
+# Introduction
 
 Power outages are a common occurrence that impacts communities across the United States, with lasting effects on both residential and commercial properties. The causes of power outages may vary between weather conditions, infrastructure issues, or even intentional human intervention. And, as climate change worsens in recent years, winter storms and summer heat waves have raised concerns about reoccurring widespread power disruptions. Thus, the goal of this project is to analyze the impact of winter or summer weather on the prevalence of power outages in the U.S., specifically exploring whether certain seasons lead to more power outages. By analyzing this data, we aim to identify trends and inform better preparedness strategies for cities enduring winter outages throughout the United States.
 
@@ -53,6 +53,8 @@ For the first half of this project, focus will be placed on specific columns mos
 * `SEASON`                    - Main focus of our research. Either 'Winter', 'Spring', 'Summer', or 'Fall'
 
  Now, let's get into the data cleaning!
+
+# Data Cleaning & Exploratory Data Analysis
 
 ### Data Cleaning
 
@@ -174,7 +176,7 @@ Now, as mentioned earlier, `"intentional attack"` was unexpectedly high as a cau
 
 Interestingly enough, Washington's outages are dominated by intentional attacks, and a quick Google search reveals that Washington state is a common victim of grid attacks. Thus, it is important to consider that severe weather and the season, despite its dominance in most
 
-## Step 3: Assessment of Missingness
+# Assessment of Missingness
 
 Taking a step back, let's analyze the missing data in our **raw** dataset. Of course, some missingness already outlined to us (i.e. `HURRICANE.NAMES` is only able to be provided if a hurricane is present). Or, as we analyzed earlier, Hawaii does not have a recognized Climate Region thus causing missingness in the corresponding column as well. But for most columns with NaNs, it seems uncertain whether there is a pattern to this behavior, or whether these data are missing at random.
 
