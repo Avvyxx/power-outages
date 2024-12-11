@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Introduction
 
 Power outages are a common occurrence that impacts communities across the United States, with lasting effects on both residential and commercial properties. The causes of power outages may vary between weather conditions, infrastructure issues, or even intentional human intervention. And, as climate change worsens in recent years, winter storms and summer heat waves have raised concerns about reoccurring widespread power disruptions. Thus, the goal of this project is to analyze the impact of winter or summer weather on the prevalence of power outages in the U.S., specifically exploring whether certain seasons lead to more power outages. By analyzing this data, we aim to identify trends and inform better preparedness strategies for cities enduring winter outages throughout the United States.
@@ -138,13 +142,18 @@ And now, this subset of data is ready for analysis!
 
 While our analyses will be focusing on on the `SEASON` of our data, let's explore the distribution of major outage causes:
 
+![Distribution of outage causes](images/outage_causes_dist.png "Outage Causes Distribution")
+
 As expected, severe weather dominates major outage events with 763 outages. This figure highlights the large role weather-related factors, such as storms, hurricanes, and extreme temperatures, play in causing power disruptions. Severe weather can often be attributed to the season as well, with summers and winters being the most severe in the US in most cases. However, intentional attacks come unexpectedly second in this distribution at 418 outages—no other categories fall close. We'll take a closer look into this later.
-
-
 
 Next in our univariate analysis is a box plot depicting the distribution of outage duration (in minutes) from over the years. Recall that there are some NaNs in this data, but let's see if we can still make our some significant trends:
 
+
+![Distribution of outage duration](images/outage_dur_dist.png "Distribution of Outage Duration")
+
 Without excluding outliers, the distribution of the data is heavily right skewed. Some outliers go as far as over 100 thousand minutes! Before we investigate this, let's look at our duration distribution *without* those outliers.
+
+![Distribution of outage duration](images/no_outliers_dur_dist.png "Distribution of Outage Duration")
 
 Given that these events are *major* outages, the right skewed distribution aligns with our expectations—in severe situations, an outage can last from hours to even days. Thus, despite the NaNs, our `OUTAGE.DURATION` data is ample enough to reflect potential trends.
 
@@ -156,9 +165,14 @@ And it looks like this extreme outlier of ours was a result of a fuel supply eme
 
 Let's now take a look at the frequency of major power outages for each state over the years by investigating the value counts of `POSTAL.CODE` per year. The figure can then provide a general understanding of the geospatial distribution of the data.
 
+
+![Outages by state](images/outages_by_state.png "Outages by State Per Year")
+
 States that are more population dense have noticibly more power outages that rural states. This highlights an important consideration: confounding factors. Discrepancies in infrastructure, population, etc. play huge roles in differences between states. We must also remember that the dataset reports *major* power outages, and thus larger states (e.g. California's larger population density) will result in larger impacts on even smaller-scale outages when compared to smaller states like Alaska's sparser population.
 
 Next, let's take a deep dive into outages a *monthly* basis with a focus on severe weather:
+
+![Frequency of weather outages](images/freq_weather_month.png "Frequency of Severe Weather Outages per Month")
 
 Interestingly enough, summer has more presence than winter. And as expected, spring and fall months tend to have less occurences of major power outages.
 
@@ -226,6 +240,8 @@ It looks like the missingness is COMPLETELY dependent on if `AREAPCT_URBAN` is 1
 
 `OUTAGE.DURATION` as we know is an aggregate statistic, but we can use the column to understand when *timestamps* weren't reported in general. Perhaps in severe power outage causes, the durations were unable to be reported. Let's check this out!
 
+![Missingness](images/missingness_cause_categories.png "Breakdown of Missingness on Cause Categories")
+
 Looks like values are especially missing during fuel supply, which makes sense since nonessential processes like logging time stamps may be shut down prior to a major outage event to conserve fuel. Similarly, equipment failure has a high prevalence of missing values over non-missing, likely because the methods of collecting logs may have had a misfunction prior to the total major outage. Let's investigate further with a hypothesis test.
 
 For this test, we will operate on a significance level of 0.01, or 1%.:
@@ -233,50 +249,26 @@ For this test, we will operate on a significance level of 0.01, or 1%.:
 * Null Hypothesis: The distribution of `CAUSE.CATEGORY` when `OUTAGE.DURATION` data is missing is the same as the distribution of `CAUSE.CATEGORY` when `OUTAGE.DURATION` is not missing.
 * Alternative Hypothesis: The distribution of `CAUSE.CATEGORY` when `OUTAGE.DURATION` data is missing is NOT the same as the distribution of `CAUSE.CATEGORY` when `OUTAGE.DURATION` is not missing.
 
+![Missingness distribution](images/missingness_cause_categories_dist.png "Breakdown of Missingness on Cause Categories Distribution")
+
 Based on our observed TVD of 0.252, we observe a p-value of 0.0, and so we reject the null.
 
 The distribution of `CAUSE.CATEGORY` when `OUTAGE.DURATION` data is missing is NOT the same as the distribution of `CAUSE.CATEGORY` when `OUTAGE.DURATION` is not missing, and therefore the missingness of `OUTAGE.DURATION` may be dependent on `CAUSE.CATEGORY`.
-
-#### Is missingness of `OUTAGE.DURATION` dependent on `POSTAL.CODE` (US State)?
-
-Given that there were ties between duration an outage cause, let's investigate if location has any relation as well.
-
-Looks like values are especially for larger and/or population-dense states. Let's do some hypothesis investigating on this!
-
-For this test, we will operate on a significance level of 0.01, or 1%.:
-
-* Null Hypothesis: The distribution of `POSTAL.CODE` when `OUTAGE.DURATION` data is missing is the same as the distribution of `POSTAL.CODE` when `OUTAGE.DURATION` is not missing.
-* Alternative Hypothesis: The distribution of `POSTAL.CODE` when `OUTAGE.DURATION` data is missing is NOT the same as the distribution of `POSTAL.CODE` when `OUTAGE.DURATION` is not missing.
-
-Based on our observed TVD of 0.4135, we observe a p-value of 0.0, and so we reject the null.
-
-The distribution of `POSTAL.CODE` when `OUTAGE.DURATION` data is missing is NOT the same as the distribution of `POSTAL.CODE` when `OUTAGE.DURATION` is not missing, and therefore the missingness of `OUTAGE.DURATION` may be dependent on `POSTAL.CODE`.
-
-#### Is missingness of `OUTAGE.DURATION` dependent on `CLIMATE.REGION`?
-
-Before we proceed with this analysis on our *raw data*, let's once again impute our missing values in `CLIMATE.REGION`. Recall that all NaNs in `CLIMATE.REGION` are in Hawaii and Alaska, as they are detatched from the main US [climate regions](https://www.ncei.noaa.gov/access/monitoring/reference-maps/us-climate-regions). For this reason, we will impute the values with "Tropical Island" to indicate Hawaii's unique region, and "Other" for Alaska.
-
-Let's investigate further.
-
-For this test, we will operate on a significance level of 0.01, or 1%.:
-
-* Null Hypothesis: The distribution of `CLIMATE.REGION` when `OUTAGE.DURATION` data is missing is the same as the distribution of `CLIMATE.REGION` when `OUTAGE.DURATION` is not missing.
-* Alternative Hypothesis: The distribution of `CLIMATE.REGION` when `OUTAGE.DURATION` data is missing is NOT the same as the distribution of `CLIMATE.REGION` when `OUTAGE.DURATION` is not missing.
-
-Based on our observed TVD of 0.2535, we observe a p-value of 0.004, and so we reject the null.
-
-The distribution of `CLIMATE.REGION` when `OUTAGE.DURATION` data is missing is NOT the same as the distribution of `CLIMATE.REGION` when `OUTAGE.DURATION` is not missing, and therefore the missingness of `OUTAGE.DURATION` may be dependent on `CLIMATE.REGION`.
 
 #### Is missingness of `OUTAGE.DURATION` dependent on `MONTH`?
 
 To make this analysis clearer, let's map `MONTH` to the respective month labels (ie. 1 to January)
 
-At first glace, it is hard to tell if there is a relationship between the two. Let's investigate further.
+![Missingness](images/missingness_month.png "Breakdown of Missingness on Month Distribution")
+
+At first glance, it is hard to tell if there is a relationship between the two. Let's investigate further.
 
 For this test, we will operate on a significance level of 0.01, or 1%.:
 
 * Null Hypothesis: The distribution of `MONTH.MAPPED` when `OUTAGE.DURATION` data is missing is the same as the distribution of `MONTH.MAPPED` when `OUTAGE.DURATION` is not missing.
 * Alternative Hypothesis: The distribution of `MONTH.MAPPED` when `OUTAGE.DURATION` data is missing is NOT the same as the distribution of `MONTH.MAPPED` when `OUTAGE.DURATION` is not missing.
+
+![Missingness distribution](images/missingness_month_dist.png "Breakdown of Missingness on Month Distribution")
 
 Based on our observed TVD of 0.2227, we observe a p-value of 0.099, and so we FAIL to reject the null.
 
