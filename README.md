@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 ## **Table of Contents**
 1. [Introduction](#introduction) <br>
     a. [Power Outage Raw Dataset](#data_desc) <br>
@@ -343,3 +347,26 @@ If our null hypothesis holds true, then the rate of Summer and Winter outages is
   height="600"
   frameborder="0"
 ></iframe>
+
+## Baseline Model
+
+***Prediction Problem: Predicting the Outage Cause***
+
+In this second half of our report, I shall aim to predict the **cause**, `CAUSE.CATEGORY`, of a major power outage based on several influencing factors. Note that we will be basing our model on data we can know at the START of an outage (i.e. we cannot use restoration time). The cause of an outage can vary from severe weather events (e.g., storms) to equipment failures or intentional attacks. By accurately predicting the cause, utilities can develop better strategies for preventing, responding to, and managing outages.
+
+- **Problem Type**: Classifier (RandomForest)
+- **Prediction Variable**: `CAUSE.CATEGORY`
+- **Evaluation Metric**: F1 Score (because not all categories equally represented, as seen in our EDA)
+
+### Features
+
+To predict the `CAUSE.CATEGORY` of an outage, we will first train a baseline model using columns most highly attributed to the cause of an outage.
+
+- `POSTAL.CODE`: Certain states may be more prone to certain major power outages (i.e. Washington and intentional attacks)
+- `SEASON`: The season in which the outage occurs (Spring, Summer, Fall, Winter), as certain seasons (e.g., winter storms, summer heatwaves) might be associated with certain outages.
+- `HURRICANE.PRESENCE`: If a hurricane is involved, the outages are likely related to severe weather.
+- `CLIMATE.REGION`: The geographical climate area where the outage occurs, as some climates may be more prone severe weather outages or other categories.
+
+## Final Model
+
+My final model incorporates `OUTAGE.START`, `NERC.REGION`, `TOTAL.CUSTOMERS`, and `POPULATION` into the predictive process. I added `OUTAGE.START` becase the time of day may influence our analysis, `NERC.REGION` because certain regions may be more likely to be affected by a specific cause, and `TOTAL.CUSTOMERS` and `POPULATION` because there may be a correlation between the amount of customers and intentional attacks.
