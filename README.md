@@ -1,17 +1,31 @@
-# Introduction
+## **Table of Contents**
+1. [Introduction](#introduction) <br>
+    a. [Power Outage Raw Dataset](#data_desc) <br>
+    b. [Necessary Columns](#col_desc)
+2. [Data Cleaning and Exploratory Data Analysis](#cleaning) <br>
+    a. [Data Cleaning](#data_clean) <br>
+    b. [Univariate Analysis](#uni_analysis) <br>
+    c. [Bivariate Analysis](#bi_analysis) <br>
+    d. [Interesting Aggregates](#aggr)
+3. [Assessment of Missingness](#assess_missingness) <br>
+    a. [NMAR Analysis](#NMAR) <br>
+    b. [Missingness Dependency](#missingness) <br>
+
+## Introduction <a name="introduction"></a>
 
 Power outages are a common occurrence that impacts communities across the United States, with lasting effects on both residential and commercial properties. The causes of power outages may vary between weather conditions, infrastructure issues, or even intentional human intervention. And, as climate change worsens in recent years, winter storms and summer heat waves have raised concerns about reoccurring widespread power disruptions. Thus, the goal of this project is to analyze the impact of winter or summer weather on the prevalence of power outages in the U.S., specifically exploring whether certain seasons lead to more power outages. By analyzing this data, we aim to identify trends and inform better preparedness strategies for cities enduring winter outages throughout the United States.
 
 The research question I aim to answer is:
 > ***Are major power outages equally likely to occur across all four seasons?***
 
-### Power Outage Dataset
+
+### Power Outage Raw Dataset <a name="data_desc"></a>
 
 To tackle my research question, I will be drawing from Purdue's dataset on [Major Power Outage Risks in the U.S.](https://engineering.purdue.edu/LASCI/research-data/outages) This dataset provides a detailed record of **1,534 rows/observations** of power outages across the United States, spanning multiple years and containing **56 columns** of different variables. The first five observations from the raw data can be seen below:
 
 Key attributes include the start and restoration times of outages, geographical information (e.g., state and region), and the causes of outages (e.g., severe weather, intentional attacks). In addition, it incorporates demographic and economic data such as population density, land usage, and measures of regional economic performance, which add valuable context to the analysis.
 
-### Necessary Columns
+### Necessary Columns <a name="col_desc"></a>
 
 For the first half of this project, focus will be placed on specific columns most relevant to exploring the relationship between seasonal patterns and power outage frequencies in detail. Specifically, we shall analyze the following columns from our *cleaned* dataset as described by [Data on major power outage events in the continental U.S.](https://www.sciencedirect.com/science/article/pii/S2352340918307182). Justifications for their usage are also described below:
 
@@ -54,9 +68,9 @@ For the first half of this project, focus will be placed on specific columns mos
 
  Now, let's get into the data cleaning!
 
-# Data Cleaning & Exploratory Data Analysis
+## Data Cleaning & Exploratory Data Analysis <a name="cleaning"></a>
 
-### Data Cleaning
+### Data Cleaning <a name="data_clean">
 
 To clean the data, we must first address the following columns: `'OUTAGE.START.DATE'`, `'OUTAGE.START.TIME'`, `'OUTAGE.RESTORATION.DATE'`, `'OUTAGE.RESTORATION.TIME'`:
 
@@ -134,7 +148,7 @@ And now, this subset of data is ready for analysis!
 | **1531** |   2009 |       8 |                59 | SD            | RFC           | West North Central |             0.5 | warm               | islanding                     |               nan | Summer   |
 | **1532** |   2009 |       8 |               181 | SD            | MRO           | West North Central |             0.5 | warm               | islanding                     |               nan | Summer   |
 
-### Univariate Analysis
+### Univariate Analysis <a name="uni_analysis">
 
 While our analyses will be focusing on on the `SEASON` of our data, let's explore the distribution of major outage causes:
 
@@ -162,9 +176,13 @@ Given that these events are *major* outages, the right skewed distribution align
 
 #### Outlier Investigation
 
+|    |   YEAR |   MONTH |   OUTAGE.DURATION | POSTAL.CODE   | NERC.REGION   | CLIMATE.REGION     |   ANOMALY.LEVEL | CLIMATE.CATEGORY   | CAUSE.CATEGORY        |   HURRICANE.NAMES | SEASON   |
+|---:|-------:|--------:|------------------:|:--------------|:--------------|:-------------------|----------------:|:-------------------|:----------------------|------------------:|:---------|
+| 53 |   2014 |       1 |            108653 | WI            | RFC           | East North Central |            -0.5 | cold               | fuel supply emergency |               nan | Winter   |
+
 And it looks like this extreme outlier of ours was a result of a fuel supply emergency (lack of coal) during the winter season!
 
-### Bivariate Analysis
+### Bivariate Analysis <a name="bi_analysis">
 
 Let's now take a look at the frequency of major power outages for each state over the years by investigating the value counts of `POSTAL.CODE` per year. The figure can then provide a general understanding of the geospatial distribution of the data.
 
@@ -188,7 +206,7 @@ Next, let's take a deep dive into outages a *monthly* basis with a focus on seve
 
 Interestingly enough, summer has more presence than winter. And as expected, spring and fall months tend to have less occurences of major power outages.
 
-### Interesting Aggregates
+### Interesting Aggregates <a name="aggr">
 
 Now, as mentioned earlier, `"intentional attack"` was unexpectedly high as a cause for major power outages. Let's take a closer look on our outage categories and how they fair against one another in the states with the most outages:
 
@@ -202,11 +220,11 @@ Now, as mentioned earlier, `"intentional attack"` was unexpectedly high as a cau
 
 Interestingly enough, Washington's outages are dominated by intentional attacks, and a quick Google search reveals that Washington state is a common victim of grid attacks. Thus, it is important to consider that severe weather and the season, despite its dominance in most
 
-# Assessment of Missingness
+## Assessment of Missingness <a name="assess_missingness"></a>
 
 Taking a step back, let's analyze the missing data in our **raw** dataset. Of course, some missingness already outlined to us (i.e. `HURRICANE.NAMES` is only able to be provided if a hurricane is present). Or, as we analyzed earlier, Hawaii does not have a recognized Climate Region thus causing missingness in the corresponding column as well. But for most columns with NaNs, it seems uncertain whether there is a pattern to this behavior, or whether these data are missing at random.
 
-### NMAR Analysis
+### NMAR Analysis <a name="NMAR"></a>
 
 Based on domain knowledge and the data generation process, I believe that the missingness in the `IND.SALES` ("Electricity consumption in the industrial sector, in megawatt-hours") column is NMAR (Not Missing at Random). Several industrial sectors may choose not to report their electricity consumption due to concerns over competitive advantage or public reputation. For example, large industries may want to keep their energy usage private to prevent revealing sensitive information about their production volumes or operational inefficiencies that contribute to the larger conversation of climate change. With increasing attention on sustainability, some industries may prefer to withhold data to avoid scrutiny over energy inefficiency.
 
@@ -238,7 +256,7 @@ In fact, taking a deeper dive into our data, we observe that missing data in any
 |  **218** |         nan |         nan |         nan |           nan |         nan |         nan |         nan |           nan |          nan |          nan |          nan |
 |  **417** |         nan |         nan |         nan |           nan |         nan |         nan |         nan |           nan |          nan |          nan |          nan |
 
-### Missingness Dependency
+### Missingness Dependency <a name="missingness"></a>
 
 Now, how about other columns that appear to have sporadic missing values? Let's see if we can determine whether the missingness for some columns is dependent on one and independent of another, therefore missing at random (MAR).
 
