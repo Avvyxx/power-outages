@@ -13,10 +13,10 @@
 
 ## Introduction <a name="introduction"></a>
 
-Power outages are a common occurrence that impacts communities across the United States, with lasting effects on both residential and commercial properties. The causes of power outages may vary between weather conditions, infrastructure issues, or even intentional human intervention. And, as climate change worsens in recent years, winter storms and summer heat waves have raised concerns about reoccurring widespread power disruptions. Thus, the goal of this project is to analyze the impact of winter or summer weather on the prevalence of power outages in the U.S., specifically exploring whether certain seasons lead to more power outages. By analyzing this data, we aim to identify trends and inform better preparedness strategies for cities enduring winter outages throughout the United States.
+Power outages are a common occurrence that impacts communities across the United States, with lasting effects on both residential and commercial properties. The causes of power outages may vary between weather conditions, infrastructure issues, or even intentional human intervention. And, as climate change worsens in recent years, winter storms and summer heat waves have raised concerns about reoccurring widespread power disruptions. Thus, the goal of this project is to analyze the impact of winter or summer weather on the prevalence of power outages in the U.S., specifically exploring whether a certain season is worse than the other. By analyzing this data, we aim to identify trends and inform better preparedness strategies for cities enduring winter outages throughout the United States.
 
 The research question I aim to answer is:
-> ***Are major power outages equally likely to occur across all four seasons?***
+> ***Are major power outages equally likely to occur between summer and winter?***
 
 
 ### Power Outage Raw Dataset <a name="data_desc"></a>
