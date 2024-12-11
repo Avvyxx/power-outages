@@ -1,4 +1,3 @@
-
 ## **Table of Contents**
 1. [Introduction](#introduction) <br>
     a. [Power Outage Raw Dataset](#data_desc) <br>
@@ -318,3 +317,29 @@ For this test, we will operate on a significance level of 0.01, or 1%.:
 Based on our observed TVD of 0.2227, we observe a p-value of 0.099, and so we FAIL to reject the null.
 
 There is evidence to support that the distribution of `MONTHS` when `OUTAGE.DURATION` data is missing is the same as the distribution of `MONTHS` when `OUTAGE.DURATION` is not missing, and therefore the missingness of `OUTAGE.DURATION` may be not dependdent on `MONTHS`.
+
+## Hypothesis Testing
+
+I will be testing whether there is an equal probability that an outage will occur in Summer as in Winter.
+
+Null Hypothesis: The number of outages in Summer and Winter are from the same distribution (i.e., there is no significant difference between them).
+
+Alternative Hypothesis: The number of outages in Summer and Winter come from different distributions (i.e., there is a significant difference between them).
+
+Now, we will perform a permutation test to gather evidence.
+
+If our null hypothesis holds true, then the rate of Summer and Winter outages is the same throughout a year, and shuffling the values of the `SEASON` column should have little effect on the value of our statistic. Thus, we will repeatedly shuffle the `SEASON` column and record the difference between the average number of winter and summer per year. Then, we will compare the values of the test statistics we obtain to our observed statistic, and see whether our observed statistic is significant.
+
+<iframe
+  src="figs/simulated_test_stats.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="figs/hyptest_fig.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
